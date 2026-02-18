@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zywave Support Site Redesign — Sam Erickson</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Karla:ital,wght@0,300;0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#2c2825;--paper:#f5f0e8;--canvas:#ece5d8;--raw:#ddd5c5;--indigo:#2d3a4e;--indigo-deep:#1e2a3a;--olive:#4a5240;--rust:#a0603a;--aged:#8b7355;--muted:#8a7f72;--light-muted:#b0a898;--white:#faf7f1;--stitch:rgba(44,40,37,0.08);--green:#3d5a44;--green-light:#4a6b52}
+*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
+body{font-family:'Karla',sans-serif;background:var(--paper);color:var(--ink);overflow-x:hidden;font-size:16px;line-height:1.65}
+body::before{content:'';position:fixed;top:0;left:0;right:0;bottom:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:9999}
+::selection{background:var(--rust);color:var(--white)}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1.2rem 3rem;display:flex;justify-content:space-between;align-items:center;backdrop-filter:blur(16px);background:rgba(245,240,232,0.9);border-bottom:1px solid var(--stitch)}
+nav .logo{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:500;letter-spacing:0.08em;color:var(--ink);text-decoration:none;text-transform:uppercase}
+nav .back-link{text-decoration:none;color:var(--muted);font-size:0.7rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;transition:color 0.3s}
+nav .back-link:hover{color:var(--ink)}
+.cs-hero{padding:10rem 3rem 5rem;max-width:1000px;margin:0 auto}
+.cs-hero .breadcrumb{font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--light-muted);margin-bottom:2rem;opacity:0;animation:fadeUp 0.7s ease 0.1s forwards}
+.cs-hero .breadcrumb a{color:var(--rust);text-decoration:none}
+.cs-hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2.2rem,4vw,3.4rem);line-height:1.12;letter-spacing:-0.01em;font-weight:400;max-width:780px;margin-bottom:1.5rem;opacity:0;animation:fadeUp 0.7s ease 0.2s forwards}
+.cs-hero .cs-subtitle{font-size:1.05rem;color:var(--muted);max-width:600px;line-height:1.75;font-weight:300;opacity:0;animation:fadeUp 0.7s ease 0.35s forwards}
+.cs-meta{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--stitch);max-width:1000px;margin:0 auto 5rem;opacity:0;animation:fadeUp 0.7s ease 0.5s forwards}
+.cs-meta-item{background:var(--white);padding:1.6rem 1.8rem}
+.cs-meta-item .meta-label{font-size:0.58rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--light-muted);margin-bottom:0.4rem}
+.cs-meta-item .meta-value{font-size:0.9rem;font-weight:500;color:var(--ink);line-height:1.4}
+.impact-strip{background:var(--indigo-deep);color:var(--paper);padding:5rem 3rem;margin-bottom:5rem}
+.impact-strip-inner{max-width:1000px;margin:0 auto}
+.impact-strip .impact-label{font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--rust);margin-bottom:2.5rem;opacity:0.8}
+.impact-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2rem}
+.impact-item .impact-number{font-family:'Cormorant Garamond',serif;font-size:3rem;font-weight:400;line-height:1;color:var(--paper);margin-bottom:0.5rem}
+.impact-item .impact-number span{color:var(--rust)}
+.impact-item .impact-desc{font-size:0.8rem;color:rgba(245,240,232,0.45);line-height:1.55;font-weight:300}
+.cs-content{max-width:700px;margin:0 auto;padding:0 3rem}
+.cs-section{margin-bottom:5rem}
+.cs-section .section-label{font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--rust);margin-bottom:1rem;display:flex;align-items:center;gap:0.8rem}
+.cs-section .section-label::after{content:'';flex:1;height:1px;background:var(--stitch)}
+.cs-section h2{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:400;margin-bottom:1.5rem;line-height:1.2}
+.cs-section p{font-size:0.95rem;line-height:1.85;color:var(--muted);font-weight:300;margin-bottom:1.2rem}
+.cs-section p strong{color:var(--ink);font-weight:500}
+/* Screenshots */
+.screenshots{max-width:1000px;margin:0 auto 5rem;padding:0 3rem}
+.screenshots .section-label{font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--rust);margin-bottom:1.5rem}
+.ss-grid{display:grid;gap:1.5rem}
+.ss-grid.three{grid-template-columns:1fr 1fr 1fr}
+.ss-card{position:relative}
+.ss-card-header{font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;padding:0.8rem 1rem;display:flex;align-items:center;gap:0.5rem}
+.ss-card-header.before{background:var(--raw);color:var(--muted)}
+.ss-card-header.after{background:var(--olive);color:rgba(245,240,232,0.7)}
+.ss-card-header.current{background:var(--indigo-deep);color:rgba(245,240,232,0.6)}
+.ss-card-header.evolved{background:var(--indigo);color:rgba(245,240,232,0.6)}
+.ss-card-body{background:var(--white);border:1px solid var(--stitch);border-top:none;padding:0.7rem;overflow:hidden}
+.ss-card-body img{width:100%;display:block;box-shadow:0 2px 12px rgba(44,40,37,0.06)}
+.ss-card-body .caption{font-size:0.65rem;color:var(--light-muted);margin-top:0.6rem;text-align:center;font-weight:300;line-height:1.45}
+/* Before/After */
+.ba-section{max-width:1000px;margin:0 auto 5rem;padding:0 3rem}
+.ba-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--stitch)}
+.ba-card{background:var(--white);padding:2rem 1.8rem}
+.ba-card .ba-title{font-size:0.6rem;letter-spacing:0.14em;text-transform:uppercase;margin-bottom:1.2rem;padding-bottom:0.8rem;border-bottom:1px solid var(--stitch)}
+.ba-card.before .ba-title{color:var(--muted)}
+.ba-card.after .ba-title{color:var(--olive)}
+.ba-point{display:flex;gap:0.7rem;margin-bottom:1rem;align-items:flex-start}
+.ba-point .ba-icon{flex-shrink:0;width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:0.6rem;margin-top:2px}
+.ba-card.before .ba-icon{color:var(--light-muted)}
+.ba-card.after .ba-icon{color:var(--olive)}
+.ba-point p{font-size:0.82rem;line-height:1.6;color:var(--muted);font-weight:300}
+.ba-point p strong{color:var(--ink);font-weight:500}
+/* Timeline */
+.process-section{max-width:1000px;margin:0 auto 5rem;padding:0 3rem}
+.process-section .section-label{font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--rust);margin-bottom:1rem}
+.process-section h2{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:400;margin-bottom:3rem}
+.timeline{position:relative;padding-left:2.5rem}
+.timeline::before{content:'';position:absolute;left:5px;top:8px;bottom:8px;width:1px;background:var(--stitch)}
+.timeline-item{position:relative;margin-bottom:3rem;padding-bottom:1rem}
+.timeline-item:last-child{margin-bottom:0}
+.timeline-item::before{content:'';position:absolute;left:-2.5rem;top:8px;width:11px;height:11px;background:var(--paper);border:2px solid var(--rust);z-index:1}
+.timeline-item:nth-child(2)::before{border-color:var(--aged)}
+.timeline-item:nth-child(3)::before{border-color:var(--indigo)}
+.timeline-item:nth-child(4)::before{border-color:var(--olive)}
+.timeline-item:nth-child(5)::before{border-color:var(--green)}
+.timeline-item .tl-phase{font-size:0.58rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--light-muted);margin-bottom:0.4rem}
+.timeline-item h3{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:400;margin-bottom:0.6rem}
+.timeline-item p{font-size:0.88rem;line-height:1.75;color:var(--muted);font-weight:300}
+.timeline-item .tl-methods{display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:0.8rem}
+.tl-methods span{font-size:0.58rem;letter-spacing:0.06em;text-transform:uppercase;padding:0.25rem 0.6rem;border:1px solid var(--stitch);color:var(--muted)}
+/* Insights */
+.insights-section{background:var(--canvas);padding:5rem 3rem;margin-bottom:5rem;border-top:1px solid var(--stitch);border-bottom:1px solid var(--stitch)}
+.insights-inner{max-width:1000px;margin:0 auto}
+.insights-inner .section-label{font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--rust);margin-bottom:1rem}
+.insights-inner h2{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:400;margin-bottom:3rem}
+.insights-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--stitch)}
+.insight-card{background:var(--white);padding:2rem}
+.insight-card .insight-num{font-family:'Cormorant Garamond',serif;font-size:2.2rem;color:rgba(160,96,58,0.15);line-height:1;margin-bottom:0.8rem}
+.insight-card h4{font-size:0.88rem;font-weight:600;margin-bottom:0.5rem;line-height:1.3}
+.insight-card p{font-size:0.8rem;color:var(--muted);line-height:1.65;font-weight:300}
+/* Footer */
+.cs-footer{background:var(--indigo-deep);color:var(--paper);padding:5rem 3rem;text-align:center}
+.cs-footer h2{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:400;margin-bottom:1rem}
+.cs-footer p{color:rgba(245,240,232,0.45);margin-bottom:2rem;font-weight:300}
+.cs-footer .cta-row{display:flex;justify-content:center;gap:0.8rem}
+.cs-footer .btn-primary{display:inline-flex;align-items:center;gap:0.4rem;padding:0.8rem 1.8rem;background:var(--rust);color:var(--white);text-decoration:none;font-size:0.7rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;transition:all 0.3s;border:none;cursor:pointer}
+.cs-footer .btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(160,96,58,0.25)}
+.cs-footer .btn-ghost{display:inline-flex;align-items:center;gap:0.4rem;padding:0.8rem 1.8rem;background:transparent;color:var(--paper);text-decoration:none;font-size:0.7rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;border:1px solid rgba(245,240,232,0.15);transition:all 0.3s}
+.cs-footer .btn-ghost:hover{border-color:var(--paper);transform:translateY(-1px)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+.reveal{opacity:0;transform:translateY(30px);transition:all 0.7s cubic-bezier(0.23,1,0.32,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+@media(max-width:1024px){.cs-meta{grid-template-columns:repeat(2,1fr)}.impact-grid{grid-template-columns:repeat(2,1fr);gap:2rem 3rem}.ba-grid{grid-template-columns:1fr}.ss-grid.three{grid-template-columns:1fr}.insights-grid{grid-template-columns:1fr}}
+@media(max-width:640px){nav{padding:1rem 1.5rem}.cs-hero{padding:7rem 1.5rem 3rem}.cs-meta{grid-template-columns:1fr}.impact-strip{padding:3rem 1.5rem}.impact-grid{grid-template-columns:1fr 1fr}.cs-content{padding:0 1.5rem}.screenshots{padding:0 1.5rem}.ba-section{padding:0 1.5rem}.process-section{padding:0 1.5rem}.insights-section{padding:3rem 1.5rem}.cs-footer{padding:3rem 1.5rem}.cs-footer .cta-row{flex-direction:column;align-items:center}}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="ux-research-portfolio.html" class="logo">Sam Erickson</a>
+  <a href="ux-research-portfolio.html" class="back-link">← Back to Portfolio</a>
+</nav>
+
+<div class="cs-hero">
+  <div class="breadcrumb"><a href="ux-research-portfolio.html">Portfolio</a> / Case Study</div>
+  <h1>Transforming Zywave's support experience from gated afterthought to self-service powerhouse</h1>
+  <p class="cs-subtitle">How research-driven decisions turned an underused, siloed help site into an open, modern support platform — reducing support cases by 29% over five years.</p>
+</div>
+
+<div class="cs-meta">
+  <div class="cs-meta-item"><div class="meta-label">Role</div><div class="meta-value">UX Writer & Research Lead</div></div>
+  <div class="cs-meta-item"><div class="meta-label">Timeline</div><div class="meta-value">2019–2020 (6–12 months)</div></div>
+  <div class="cs-meta-item"><div class="meta-label">Platform</div><div class="meta-value">MadCap Flare → Salesforce Experience Cloud</div></div>
+  <div class="cs-meta-item"><div class="meta-label">Team</div><div class="meta-value">Led project with UX, dev, & support partners</div></div>
+</div>
+
+<div class="impact-strip">
+  <div class="impact-strip-inner">
+    <div class="impact-label">Measurable Impact</div>
+    <div class="impact-grid">
+      <div class="impact-item reveal"><div class="impact-number">304<span>%</span></div><div class="impact-desc">Increase in monthly active users on the support site</div></div>
+      <div class="impact-item reveal"><div class="impact-number">7k<span>→</span>5k</div><div class="impact-desc">Monthly support cases reduced from ~7,000 to ~5,000 over 5 years</div></div>
+      <div class="impact-item reveal"><div class="impact-number">15<span>%</span></div><div class="impact-desc">Reduction in support tickets within the first 6 months of launch</div></div>
+      <div class="impact-item reveal"><div class="impact-number">2hr<span>→</span>2min</div><div class="impact-desc">Time to update a support article, from hours to minutes</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="cs-content">
+  <div class="cs-section reveal">
+    <div class="section-label">The Problem</div>
+    <h2>A support site nobody used — because nobody could</h2>
+    <p>Zywave's existing support site was built on MadCap Flare, a technical publishing tool designed for documentation — not self-service experiences. Each product had its own isolated help site behind a login wall, meaning customers had to authenticate separately for each one. If a workflow crossed product boundaries, content was either duplicated across sites, linked to another gated site (requiring a second login), or simply not documented.</p>
+    <p>The layout was outdated and difficult to navigate. <strong>Users couldn't figure out where to go to find the information they needed, so they didn't bother trying.</strong> Instead, they defaulted to calling or emailing support directly. Many didn't even know the help site existed.</p>
+    <p>On the internal side, maintaining the site was equally painful. Updating just two numbers in a single article — a task that happened multiple times per year — took <strong>over two hours</strong> using MadCap Flare. Any edit, no matter how small, carried this same overhead, making it nearly impossible for the content team to keep articles current.</p>
+  </div>
+</div>
+
+<!-- SCREENSHOTS: Evolution -->
+<div class="screenshots reveal">
+  <div class="section-label">Visual Evolution</div>
+  <div class="ss-grid three">
+    <div class="ss-card">
+      <div class="ss-card-header before">✕ Before</div>
+      <div class="ss-card-body"><img src="old_help_site.jpg" alt="Old HRconnection help site"><p class="caption">MadCap Flare · Siloed per product · Login required · Dated layout</p></div>
+    </div>
+    <div class="ss-card">
+      <div class="ss-card-header after">✓ V1 · 2020 Launch</div>
+      <div class="ss-card-body"><img src="19-20_help_site.jpg" alt="First iteration of new support site"><p class="caption">Salesforce Experience Cloud · Unified · Search-first · Browse by topic & solution</p></div>
+    </div>
+    <div class="ss-card">
+      <div class="ss-card-header evolved">✓ V2 · Evolved</div>
+      <div class="ss-card-body"><img src="21_new_support_site.jpg" alt="Second iteration with custom illustrations"><p class="caption">Prominent search hero · Custom illustrations · Zywave University · Strategies added</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- Before/After Details -->
+<div class="ba-section reveal">
+  <div class="ba-grid">
+    <div class="ba-card before">
+      <div class="ba-title">✕ Before — MadCap Flare</div>
+      <div class="ba-point"><div class="ba-icon">✕</div><p><strong>Gated access</strong> — login required for every product's help site</p></div>
+      <div class="ba-point"><div class="ba-icon">✕</div><p><strong>Siloed by product</strong> — cross-product workflows fragmented or undocumented</p></div>
+      <div class="ba-point"><div class="ba-icon">✕</div><p><strong>Outdated layout</strong> — difficult to navigate, unclear information architecture</p></div>
+      <div class="ba-point"><div class="ba-icon">✕</div><p><strong>2+ hours to update one article</strong> — publishing workflow was painfully slow</p></div>
+      <div class="ba-point"><div class="ba-icon">✕</div><p><strong>Extremely low usage</strong> — customers didn't know it existed or couldn't access it</p></div>
+      <div class="ba-point"><div class="ba-icon">✕</div><p><strong>Not indexed by search engines</strong> — articles invisible to Google, no organic discovery</p></div>
+    </div>
+    <div class="ba-card after">
+      <div class="ba-title">✓ After — Salesforce Experience Cloud</div>
+      <div class="ba-point"><div class="ba-icon">✓</div><p><strong>Open access</strong> — no login required to browse and search articles</p></div>
+      <div class="ba-point"><div class="ba-icon">✓</div><p><strong>Unified experience</strong> — all products under one searchable roof</p></div>
+      <div class="ba-point"><div class="ba-icon">✓</div><p><strong>Modern, card-based layout</strong> — prominent search bar with browsable product sections</p></div>
+      <div class="ba-point"><div class="ba-icon">✓</div><p><strong>2-minute updates</strong> — content team can edit and publish in real-time</p></div>
+      <div class="ba-point"><div class="ba-icon">✓</div><p><strong>304% increase in monthly active users</strong> — customers actually using self-service</p></div>
+      <div class="ba-point"><div class="ba-icon">✓</div><p><strong>Google-indexed articles</strong> — customers find answers directly via search engines</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- Current State -->
+<div class="screenshots reveal">
+  <div class="section-label">Lasting Impact · The Site Today (2025)</div>
+  <p style="font-size:0.9rem;color:var(--muted);font-weight:300;line-height:1.75;margin-bottom:2rem;">I passed ownership of the support site in 2022, but the team continued building on the foundation I designed — polishing the experience and implementing features from my backlog.</p>
+  <div class="ss-grid three">
+    <div class="ss-card">
+      <div class="ss-card-header current">Homepage · 2025</div>
+      <div class="ss-card-body"><img src="support_homepage.jpg" alt="Current support homepage"><p class="caption">Search hero retained · Guidance Center added · Zywave University integration</p></div>
+    </div>
+    <div class="ss-card">
+      <div class="ss-card-header current">Topic Landing Page</div>
+      <div class="ss-card-body"><img src="topic_landing_page.jpg" alt="Topic landing page"><p class="caption">Article list with view counts · Related Topics · Trending Articles — layout largely unchanged</p></div>
+    </div>
+    <div class="ss-card">
+      <div class="ss-card-header current">Search Results · Backlog Item Shipped</div>
+      <div class="ss-card-body"><img src="search_results.jpg" alt="Search results with filters"><p class="caption">"Refine By" filters — a backlog feature I scoped but couldn't ship before transitioning roles</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- Process -->
+<div class="process-section">
+  <div class="section-label reveal">The Process</div>
+  <h2 class="reveal">Research-led from discovery to launch</h2>
+  <div class="timeline">
+    <div class="timeline-item reveal">
+      <div class="tl-phase">Phase 1 — Discovery & Stakeholder Alignment</div>
+      <h3>Building the business case</h3>
+      <p>I started by interviewing internal stakeholders across the support, product, and content teams. The publishing pain was immediately clear — I documented the real time cost of content updates (2+ hours per article edit) and the near-zero usage of the existing site. I presented these findings alongside the cost-neutral platform switch opportunity (Salesforce Experience Cloud was already included in Zywave's contract but unused) to the Chief Customer Officer and Chief Product Officer. Both agreed the move was a no-brainer.</p>
+      <div class="tl-methods"><span>Stakeholder Interviews</span><span>Analytics Review</span><span>Cost Analysis</span></div>
+    </div>
+    <div class="timeline-item reveal">
+      <div class="tl-phase">Phase 2 — User Research</div>
+      <h3>Understanding why self-service was failing</h3>
+      <p>I conducted interviews with Zywave customers, their end-user clients, and internal support agents who used the site daily. The quantitative data told us no one was using the old support site — and the interviews confirmed why. Customers didn't know it existed, and those who did found it too hard to navigate. They defaulted to contacting support directly rather than trying to self-serve.</p>
+      <div class="tl-methods"><span>User Interviews</span><span>Surveys</span><span>Support Ticket Analysis</span></div>
+    </div>
+    <div class="timeline-item reveal">
+      <div class="tl-phase">Phase 3 — Competitive Analysis & IA</div>
+      <h3>Learning from the best and restructuring from scratch</h3>
+      <p>Since direct competitors' support sites were inaccessible, I analyzed support experiences that Zywave customers were most likely familiar with — Microsoft, Apple, and Salesforce. This research confirmed that a prominent search bar was essential, but also that users needed a clear browsing path for when they didn't know what to search for. A critical insight from studying Apple and Microsoft's support models was that their help articles were indexed by Google — meaning customers could find answers without ever visiting the support site directly. We made Google indexing a priority for the new platform. I then ran card sorting exercises that shaped the new site's information architecture.</p>
+      <div class="tl-methods"><span>Competitive Analysis</span><span>Card Sorting</span><span>IA Design</span></div>
+    </div>
+    <div class="timeline-item reveal">
+      <div class="tl-phase">Phase 4 — Build & Migration</div>
+      <h3>Hundreds of articles, rebuilt by hand</h3>
+      <p>With the new platform and structure defined, I led the effort to manually migrate hundreds of support articles from MadCap Flare to Salesforce Experience Cloud. Each article was reviewed, restructured to fit the new IA, and rewritten where needed. I coordinated with dev and UX team members to build out the platform in parallel.</p>
+      <div class="tl-methods"><span>Content Migration</span><span>Platform Build</span><span>Cross-team Coordination</span></div>
+    </div>
+    <div class="timeline-item reveal">
+      <div class="tl-phase">Phase 5 — Testing & Rollout</div>
+      <h3>Validating with users before going live</h3>
+      <p>I ran usability testing sessions with customers to validate the new site's navigation, search behavior, and article findability before launch. The rollout was staged — first to internal teams, then to customers, and finally embedded as the live help resource within Zywave products.</p>
+      <div class="tl-methods"><span>Usability Testing</span><span>Staged Rollout</span><span>Internal Training</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- Insights -->
+<div class="insights-section">
+  <div class="insights-inner">
+    <div class="section-label reveal">Key Research Insights</div>
+    <h2 class="reveal">What the research told us</h2>
+    <div class="insights-grid">
+      <div class="insight-card reveal"><div class="insight-num">01</div><h4>The gate was the biggest barrier</h4><p>Requiring login to access help content meant customers never discovered the resource existed. Removing the gate was the single highest-impact change.</p></div>
+      <div class="insight-card reveal"><div class="insight-num">02</div><h4>Search is table stakes, but browsing is essential</h4><p>Users who don't know the right search terms need a visual path through product categories to find their answer.</p></div>
+      <div class="insight-card reveal"><div class="insight-num">03</div><h4>Internal users are users too</h4><p>Support agents and content authors were as affected by the old site as customers. Reducing article update time from 2 hours to 2 minutes meant content could actually stay current.</p></div>
+      <div class="insight-card reveal"><div class="insight-num">04</div><h4>Community needs critical mass to work</h4><p>We built a community forum at launch, but it never gained traction — validating that community features need an active user base and dedicated moderation to succeed.</p></div>
+      <div class="insight-card reveal"><div class="insight-num">05</div><h4>The business case writes itself when you show the pain</h4><p>Demonstrating that it took 2+ hours to change two numbers in an article made executive buy-in immediate.</p></div>
+      <div class="insight-card reveal"><div class="insight-num">06</div><h4>Product silos create content silos</h4><p>The old per-product help sites meant cross-product workflows were either duplicated, fragmented, or not documented. A unified site finally let content reflect how customers actually work.</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- Reflection -->
+<div class="cs-content">
+  <div class="cs-section reveal">
+    <div class="section-label">Reflection</div>
+    <h2>What I'd do differently & what I'm proud of</h2>
+    <p>This project taught me that <strong>research doesn't have to be a separate phase — it can be the engine that drives an entire initiative</strong>. As a UX Writer, I stepped well beyond my core role to lead research, build the business case, coordinate the migration, and shape the final experience.</p>
+    <p>The community forum was a lesson in knowing when to cut. The research supported the idea, but the execution context wasn't right.</p>
+    <p>What I'm most proud of is the <strong>lasting impact</strong>. I transitioned off the project in 2022, but the team continued building on the foundation — polishing the experience and shipping features from my backlog, like the search refinement filters I had scoped but couldn't implement before moving roles. The site's core architecture remains intact five years later.</p>
+    <p>Making help articles discoverable via Google was one of those decisions that seemed obvious in hindsight but required competitive research to surface. It meant customers could get answers without even knowing the support site existed — <strong>which is exactly what great self-service should feel like</strong>.</p>
+  </div>
+</div>
+
+<div class="cs-footer">
+  <h2>Want to hear more about this project?</h2>
+  <p>I'm happy to walk through my process, share additional details, or discuss how I can bring this approach to your team.</p>
+  <div class="cta-row">
+    <a href="ux-research-portfolio.html#contact" class="btn-primary">Get in touch</a>
+    <a href="ux-research-portfolio.html#work" class="btn-ghost">← View all work</a>
+  </div>
+</div>
+
+<script>
+const reveals=document.querySelectorAll('.reveal');
+const observer=new IntersectionObserver((entries)=>{entries.forEach((entry,i)=>{if(entry.isIntersecting){setTimeout(()=>{entry.target.classList.add('visible')},i*60);observer.unobserve(entry.target)}})},{threshold:0.08});
+reveals.forEach(el=>observer.observe(el));
+</script>
+</body>
+</html>

@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Style Direction Preview — Sam Erickson Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* --- VISVIM / ORSLOW INSPIRED PALETTE --- */
+    --kinari: #f5f0e8;        /* unbleached cotton / natural white */
+    --sashiko: #e8e2d6;       /* aged linen */
+    --canvas: #d9d0c1;        /* washed canvas */
+    --rope: #a89a86;          /* hemp rope / muted brown */
+    --iron: #5c564d;          /* iron dye / dark warm grey */
+    --sumi: #2c2825;          /* sumi ink / near-black */
+
+    --indigo-light: #6b7fa3;  /* faded indigo / washed denim */
+    --indigo: #3d5a80;        /* natural indigo */
+    --indigo-deep: #2a3f5f;   /* deep indigo */
+    --indigo-dark: #1a2740;   /* dark indigo / raw denim */
+
+    --rust: #b0623a;          /* persimmon dye / kakishibu */
+    --olive: #6b7355;         /* olive drab / military surplus */
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'IBM Plex Sans', sans-serif;
+    background: var(--kinari);
+    color: var(--sumi);
+    padding: 3rem;
+    line-height: 1.6;
+    position: relative;
+  }
+
+  /* Subtle grain texture overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+  }
+
+  .preview-container {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .preview-header {
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--canvas);
+  }
+
+  .preview-header .label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--indigo);
+    margin-bottom: 1rem;
+  }
+
+  .preview-header h1 {
+    font-family: 'Source Serif 4', serif;
+    font-size: 2.2rem;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+    margin-bottom: 0.8rem;
+  }
+
+  .preview-header p {
+    font-size: 0.95rem;
+    color: var(--iron);
+    font-weight: 300;
+    max-width: 600px;
+    line-height: 1.7;
+  }
+
+  /* --- COLOR PALETTE --- */
+  .section-title {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--rope);
+    margin-bottom: 1.5rem;
+  }
+
+  .palette-section {
+    margin-bottom: 3.5rem;
+  }
+
+  .palette-row {
+    display: flex;
+    gap: 0.8rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .palette-row .swatch {
+    flex: 1;
+    min-width: 100px;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(44, 40, 37, 0.06);
+  }
+
+  .swatch .swatch-color {
+    height: 80px;
+  }
+
+  .swatch .swatch-info {
+    padding: 0.7rem 0.8rem;
+    background: rgba(255,255,255,0.5);
+  }
+
+  .swatch .swatch-name {
+    font-size: 0.78rem;
+    font-weight: 500;
+    margin-bottom: 0.15rem;
+  }
+
+  .swatch .swatch-hex {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--rope);
+  }
+
+  .swatch .swatch-wcag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.58rem;
+    color: var(--olive);
+    margin-top: 0.2rem;
+  }
+
+  .palette-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--rope);
+    margin-bottom: 0.6rem;
+  }
+
+  /* --- TYPOGRAPHY --- */
+  .type-section {
+    margin-bottom: 3.5rem;
+  }
+
+  .type-sample {
+    margin-bottom: 2.5rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--canvas);
+  }
+
+  .type-sample:last-child { border-bottom: none; }
+
+  .type-sample .type-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--indigo-light);
+    margin-bottom: 0.8rem;
+  }
+
+  .type-sample .display-text {
+    font-family: 'Source Serif 4', serif;
+    font-size: 2.8rem;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    color: var(--sumi);
+    margin-bottom: 0.3rem;
+  }
+
+  .type-sample .display-text em {
+    font-style: italic;
+    color: var(--indigo);
+  }
+
+  .type-sample .body-text {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 300;
+    line-height: 1.85;
+    color: var(--iron);
+    max-width: 560px;
+  }
+
+  .type-sample .mono-text {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    color: var(--rope);
+  }
+
+  /* --- COMPONENT PREVIEWS --- */
+  .components-section {
+    margin-bottom: 3.5rem;
+  }
+
+  .component-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+
+  /* Card preview */
+  .preview-card {
+    background: rgba(255,255,255,0.4);
+    border: 1px solid var(--canvas);
+    border-radius: 14px;
+    overflow: hidden;
+    transition: all 0.4s ease;
+  }
+
+  .preview-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(44, 40, 37, 0.06);
+  }
+
+  .preview-card .card-top {
+    height: 160px;
+    background: var(--indigo-dark);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  /* Hand-drawn style line decorations */
+  .preview-card .card-top svg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0.12;
+  }
+
+  .preview-card .card-bottom {
+    padding: 1.5rem;
+  }
+
+  .preview-card .card-tags {
+    display: flex;
+    gap: 0.4rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .preview-card .card-tags span {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--indigo);
+    background: rgba(61, 90, 128, 0.08);
+    padding: 0.25rem 0.6rem;
+    border-radius: 20px;
+  }
+
+  .preview-card h3 {
+    font-family: 'Source Serif 4', serif;
+    font-size: 1.25rem;
+    font-weight: 400;
+    line-height: 1.3;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.01em;
+  }
+
+  .preview-card p {
+    font-size: 0.85rem;
+    color: var(--iron);
+    font-weight: 300;
+    line-height: 1.65;
+  }
+
+  .preview-card .read-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 1rem;
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--indigo);
+    text-decoration: none;
+    transition: gap 0.3s;
+  }
+
+  .preview-card .read-link:hover { gap: 0.8rem; }
+
+  /* Stat card preview */
+  .preview-stat {
+    background: rgba(255,255,255,0.4);
+    border: 1px solid var(--canvas);
+    border-radius: 14px;
+    padding: 1.8rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .preview-stat::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--indigo);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease;
+  }
+
+  .preview-stat:hover::before { transform: scaleX(1); }
+
+  .preview-stat .stat-number {
+    font-family: 'Source Serif 4', serif;
+    font-size: 2.5rem;
+    line-height: 1;
+    color: var(--sumi);
+    margin-bottom: 0.4rem;
+  }
+
+  .preview-stat .stat-label {
+    font-size: 0.78rem;
+    color: var(--rope);
+    font-weight: 300;
+  }
+
+  /* Button previews */
+  .button-row {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    margin-top: 1.5rem;
+  }
+
+  .btn-primary-preview {
+    padding: 0.8rem 1.8rem;
+    background: var(--indigo-deep);
+    color: var(--kinari);
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .btn-primary-preview:hover {
+    background: var(--indigo-dark);
+    transform: translateY(-1px);
+  }
+
+  .btn-ghost-preview {
+    padding: 0.8rem 1.8rem;
+    background: transparent;
+    color: var(--sumi);
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    border-radius: 8px;
+    border: 1px solid var(--canvas);
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .btn-ghost-preview:hover {
+    border-color: var(--iron);
+    transform: translateY(-1px);
+  }
+
+  /* Tool tags */
+  .tools-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 1.5rem;
+  }
+
+  .tools-row span {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.04em;
+    padding: 0.4rem 0.9rem;
+    border: 1px solid var(--canvas);
+    border-radius: 6px;
+    color: var(--iron);
+    transition: all 0.3s;
+  }
+
+  .tools-row span:hover {
+    border-color: var(--indigo);
+    color: var(--indigo);
+  }
+
+  /* --- DARK SECTION PREVIEW --- */
+  .dark-preview {
+    background: var(--sumi);
+    border-radius: 16px;
+    padding: 2.5rem;
+    margin-bottom: 3.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .dark-preview::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+  }
+
+  .dark-preview .section-title { color: var(--indigo-light); }
+
+  .dark-preview h2 {
+    font-family: 'Source Serif 4', serif;
+    font-size: 1.8rem;
+    font-weight: 400;
+    color: var(--kinari);
+    margin-bottom: 0.8rem;
+  }
+
+  .dark-preview p {
+    font-size: 0.9rem;
+    color: var(--rope);
+    font-weight: 300;
+    line-height: 1.7;
+  }
+
+  .dark-preview .method-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: rgba(245, 240, 232, 0.06);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-top: 1.5rem;
+  }
+
+  .dark-preview .method-item {
+    padding: 1.5rem;
+    background: var(--sumi);
+  }
+
+  .dark-preview .method-item:hover {
+    background: rgba(245, 240, 232, 0.03);
+  }
+
+  .dark-preview .method-item h4 {
+    font-family: 'Source Serif 4', serif;
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--kinari);
+    margin-bottom: 0.3rem;
+  }
+
+  .dark-preview .method-item p {
+    font-size: 0.75rem;
+    color: rgba(245, 240, 232, 0.4);
+    line-height: 1.5;
+  }
+
+  /* Hand-drawn line separator */
+  .hand-drawn-line {
+    width: 100%;
+    height: 20px;
+    margin: 2rem 0;
+  }
+
+  /* Accessibility notes */
+  .a11y-note {
+    background: rgba(107, 115, 85, 0.08);
+    border-left: 3px solid var(--olive);
+    border-radius: 0 8px 8px 0;
+    padding: 1.2rem 1.5rem;
+    margin-top: 1.5rem;
+  }
+
+  .a11y-note .a11y-title {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--olive);
+    margin-bottom: 0.4rem;
+  }
+
+  .a11y-note p {
+    font-size: 0.82rem;
+    color: var(--iron);
+    line-height: 1.6;
+    font-weight: 300;
+  }
+
+  @media (max-width: 640px) {
+    body { padding: 1.5rem; }
+    .component-grid { grid-template-columns: 1fr; }
+    .dark-preview .method-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="preview-container">
+
+  <div class="preview-header">
+    <div class="label">Style Direction Preview</div>
+    <h1>Visvim & Orslow–inspired redesign</h1>
+    <p>Warmer, more textured, craft-focused. Indigo as an anchor color. Less polished, more intentional. Here's the direction before I apply it to the full portfolio.</p>
+  </div>
+
+  <!-- COLOR PALETTE -->
+  <div class="palette-section">
+    <div class="section-title">Color Palette</div>
+
+    <div class="palette-label">Neutrals — natural fibers</div>
+    <div class="palette-row">
+      <div class="swatch">
+        <div class="swatch-color" style="background:var(--kinari);"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Kinari</div>
+          <div class="swatch-hex">#f5f0e8</div>
+          <div class="swatch-wcag">Background</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:var(--sashiko);"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Sashiko</div>
+          <div class="swatch-hex">#e8e2d6</div>
+          <div class="swatch-wcag">Subtle bg</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:var(--canvas);"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Canvas</div>
+          <div class="swatch-hex">#d9d0c1</div>
+          <div class="swatch-wcag">Borders</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:var(--rope);"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Rope</div>
+          <div class="swatch-hex">#a89a86</div>
+          <div class="swatch-wcag">Muted text</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:var(--iron);"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Iron</div>
+          <div class="swatch-hex">#5c564d</div>
+          <div class="swatch-wcag">AA on kinari ✓</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:var(--sumi);"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Sumi</div>
+          <div class="swatch-hex">#2c2825</div>
+          <div class="swatch-wcag">AAA on kinari ✓</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="palette-label">Indigo — the anchor</div>
+    <div class="palette-row">
+      <div class="swatch">
+        <div class="swatch-color" style="background:var(--indigo-light);"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Faded Indigo</div>
+          <div class="swatch-hex">#6b7fa3</div>
+          <div class="swatch-wcag">AA on kinari ✓</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:var(--indigo);"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Indigo</div>
+          <div class="swatch-hex">#3d5a80</div>
+          <div class="swatch-wcag">AA on kinari ✓</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:var(--indigo-deep);"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Deep Indigo</div>
+          <div class="swatch-hex">#2a3f5f</div>
+          <div class="swatch-wcag">AAA on kinari ✓</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:var(--indigo-dark);"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Raw Denim</div>
+          <div class="swatch-hex">#1a2740</div>
+          <div class="swatch-wcag">AAA on kinari ✓</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="palette-label">Accents — dye & earth</div>
+    <div class="palette-row" style="max-width:300px;">
+      <div class="swatch">
+        <div class="swatch-color" style="background:var(--rust);"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Kakishibu</div>
+          <div class="swatch-hex">#b0623a</div>
+          <div class="swatch-wcag">AA on kinari ✓</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:var(--olive);"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Olive</div>
+          <div class="swatch-hex">#6b7355</div>
+          <div class="swatch-wcag">AA on kinari ✓</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="a11y-note">
+      <div class="a11y-title">Accessibility</div>
+      <p>All text colors meet WCAG AA contrast minimums on the Kinari background. Sumi (headings) and Deep Indigo (links/accents) meet AAA. The Rope color is reserved for decorative/secondary labels only — never for essential information.</p>
+    </div>
+  </div>
+
+  <!-- TYPOGRAPHY -->
+  <div class="type-section">
+    <div class="section-title">Typography</div>
+
+    <div class="type-sample">
+      <div class="type-label">Headlines · Source Serif 4 (regular weight)</div>
+      <div class="display-text">Turning user insight into <em>meaningful</em> design decisions</div>
+    </div>
+
+    <div class="type-sample">
+      <div class="type-label">Body · IBM Plex Sans (light 300)</div>
+      <div class="body-text">I bring research, writing, and real customer experience together — translating what users need into products teams can confidently build. More breathing room. Less polish. More craft.</div>
+    </div>
+
+    <div class="type-sample">
+      <div class="type-label">Labels & Tags · IBM Plex Mono</div>
+      <div class="mono-text">UX RESEARCHER · UX WRITER · 2019–2020 · MIXED METHODS</div>
+    </div>
+  </div>
+
+  <!-- HAND-DRAWN SEPARATOR -->
+  <svg class="hand-drawn-line" viewBox="0 0 900 20" preserveAspectRatio="none">
+    <path d="M0,10 Q50,5 100,10 T200,10 T300,10 T400,10 T500,10 T600,10 T700,10 T800,10 T900,10" stroke="#d9d0c1" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  </svg>
+
+  <!-- COMPONENT PREVIEWS -->
+  <div class="components-section">
+    <div class="section-title">Component Previews</div>
+
+    <div class="component-grid">
+      <div class="preview-card">
+        <div class="card-top">
+          <svg viewBox="0 0 400 160" preserveAspectRatio="none">
+            <path d="M0,80 Q40,60 80,80 T160,80 T240,80 T320,80 T400,80" stroke="rgba(245,240,232,0.3)" stroke-width="1" fill="none"/>
+            <path d="M0,100 Q50,85 100,100 T200,100 T300,100 T400,100" stroke="rgba(245,240,232,0.2)" stroke-width="1" fill="none"/>
+            <path d="M0,60 Q60,45 120,60 T240,60 T360,60 T400,60" stroke="rgba(245,240,232,0.15)" stroke-width="1" fill="none"/>
+            <circle cx="200" cy="80" r="25" stroke="rgba(245,240,232,0.2)" stroke-width="1" fill="none"/>
+            <circle cx="200" cy="80" r="15" stroke="rgba(245,240,232,0.15)" stroke-width="1" fill="none"/>
+          </svg>
+        </div>
+        <div class="card-bottom">
+          <div class="card-tags">
+            <span>Mixed Methods</span>
+            <span>B2B SaaS</span>
+          </div>
+          <h3>Transforming Zywave's support site</h3>
+          <p>Led end-to-end research and redesign of a siloed, login-gated help site.</p>
+          <a href="#" class="read-link">Read case study →</a>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:1rem;">
+        <div class="preview-stat">
+          <div class="stat-number">304%</div>
+          <div class="stat-label">Increase in monthly active users</div>
+        </div>
+        <div class="preview-stat">
+          <div class="stat-number">7k → 5k</div>
+          <div class="stat-label">Monthly support cases over 5 years</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="button-row">
+      <button class="btn-primary-preview">View case studies</button>
+      <button class="btn-ghost-preview">Get in touch</button>
+    </div>
+
+    <div class="tools-row">
+      <span>Salesforce</span>
+      <span>Qualtrics</span>
+      <span>Heap</span>
+      <span>Google Analytics</span>
+      <span>Jira</span>
+      <span>Confluence</span>
+    </div>
+  </div>
+
+  <!-- DARK SECTION -->
+  <div class="dark-preview">
+    <div class="section-title">Dark Section Preview (Methods / Impact)</div>
+    <h2>Research Toolkit</h2>
+    <p>The methods section and impact strips would use this darker treatment.</p>
+
+    <div class="method-grid">
+      <div class="method-item">
+        <h4>User Interviews</h4>
+        <p>In-depth generative and evaluative interviews</p>
+      </div>
+      <div class="method-item">
+        <h4>Usability Testing</h4>
+        <p>Moderated and unmoderated testing</p>
+      </div>
+      <div class="method-item">
+        <h4>Card Sorting</h4>
+        <p>Open and closed sorts for IA</p>
+      </div>
+      <div class="method-item">
+        <h4>Surveys & Quant</h4>
+        <p>Survey design and analytics</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEXTURE NOTE -->
+  <div style="text-align:center;padding:2rem;color:var(--rope);font-size:0.85rem;font-weight:300;">
+    <p>↑ Subtle grain texture is applied across the entire page. Look closely at the backgrounds.</p>
+    <p style="margin-top:0.5rem;font-family:'IBM Plex Mono',monospace;font-size:0.7rem;">The texture is intentionally subtle — felt, not seen.</p>
+  </div>
+
+</div>
+
+</body>
+</html>
