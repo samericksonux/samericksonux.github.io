@@ -1,2 +1,2 @@
 # samericksonux.github.io
-a portfolio for my work in UX
+a portfolio for my work in design, UX, and Research
