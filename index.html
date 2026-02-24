@@ -250,7 +250,7 @@ footer .back-to-top:hover{color:var(--rust)}
   <a href="#" class="back-to-top">Back to top ↑</a>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 const reveals=document.querySelectorAll('.reveal');
 const observer=new IntersectionObserver((entries)=>{entries.forEach((entry,i)=>{if(entry.isIntersecting){setTimeout(()=>{entry.target.classList.add('visible')},i*60);observer.unobserve(entry.target)}})},{threshold:0.08});
 reveals.forEach(el=>observer.observe(el));
